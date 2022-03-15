@@ -2,10 +2,6 @@ import React, { useEffect } from 'react'
 import {connect} from 'react-redux'
 
 function Movieform(props) {
-  // const [name, setName]= useState('')
-  // const [duration, setDuration]= useState(null)
-  // const [rating, setRating]= useState('')
-  // const [isError, setisError]= useState(false)
   const {name, duration, rating, isError, moviesList, setisError, setName, setDuration, setRating, setMoviesList}= props
 
   useEffect(()=>{
