@@ -29,7 +29,7 @@ const rootReducer= (state= initState, action)=>{
     }
     if(action.type === 'SET_MOVIESLIST'){
         return {
-            name: action.list
+            name: action.moviesList
         }
     }
 
