@@ -3,14 +3,17 @@ import {connect} from 'react-redux'
 
 function Search(props) {
 
-const {moviesList, setMoviesList}= props;
+const {moviesList, setsearchedMovies}= props;
   const handleChange= (e)=>{
       //run the function if the input value length is 2 or more
     //   if(e.target.value.length ){
 
     //   }
-    let newList= moviesList.filter((movie)=> movie.name.startsWith(e.target.value))
-    setMoviesList(newList)
+    if(moviesList.length){
+        let newList= moviesList.filter((movie)=> movie.name.includes(e.target.value.toLowerCase()))
+        setsearchedMovies(newList)
+    }
+    
   }
 
   return (
@@ -33,7 +36,7 @@ const mapStateToProps= (state)=>{
 }
 const mapDispatchToProps= (dispatch)=>{
   return {
-    setMoviesList: (value)=>{dispatch({type: 'SET_MOVIESLIST', value})}
+    setsearchedMovies: (value)=>{dispatch({type: 'SET_SEARCHEDMOVIES', searchedMovies: value})}
   }
 }
 

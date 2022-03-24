@@ -3,33 +3,45 @@ const initState= {
     rating: '',
     duration: '',
     isError: false,
-    moviesList: []
+    moviesList: [],
+    searchedMovies: []
 }
 
 const rootReducer= (state= initState, action)=>{
     if(action.type === 'SET_NAME'){
         return {
+            ...state,
             name: action.name
         }
     }
     if(action.type === 'SET_RATING'){
         return {
-            name: action.rating
+            ...state,
+            rating: action.rating
         }
     }
     if(action.type === 'SET_DURATION'){
         return {
-            name: action.duration
+            ...state,
+            duration: action.duration
         }
     }
     if(action.type === 'SET_ISERROR'){
         return {
-            name: action.isError
+            ...state,
+            isError: action.isError
         }
     }
     if(action.type === 'SET_MOVIESLIST'){
         return {
-            name: action.moviesList
+            ...state,
+            moviesList: action.moviesList
+        }
+    }
+    if(action.type === 'SET_SEARCHEDMOVIES'){
+        return {
+            ...state,
+            searchedMovies: action.searchedMovies
         }
     }
 

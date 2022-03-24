@@ -1,61 +1,61 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
 
-function Movieform(props) {
-  const {name, duration, rating, isError, moviesList, setisError, setName, setDuration, setRating, setMoviesList}= props
+function MovieForm(props) {
+  const {
+    name, 
+    duration, 
+    rating, 
+    isError, 
+    moviesList, 
+    setIsError, 
+    setName, 
+    setDuration, 
+    setRating, 
+    setMoviesList, 
+    searchedMovies,
+    setsearchedMovies}= props
 
-//   useEffect(()=>{
-//     if(duration){
-//       if(!duration.includes('h') || !duration.includes('m')){
-//         setisError(true);
-//       }else{
-//         if(isError){setisError(false)};
-//       }
-//     }  
-    
-//   }, [duration]);
 
   const handleChange= (e)=>{
     if(e.target.id.includes('name')){
-        if(e.target.value) setName(e.target.value)
-      return
+      setName(e.target.value.toLowerCase());
     //   if(isError){setisError(false)};
-    }
-    if(e.target.id.includes('ratings')){
-        if(e.target.value) setRating(e.target.value + '/100')
-      return
-    //   if(isError){setisError(false)};
+      return;
+      
     }
     if(e.target.id.includes('duration')){
-        let newDuration;
-        if(e.target.value){
-            if(e.target.value.search(/h$/) || e.target.value.search(/m$/)){
-                newDuration= e.target.value;
-                setDuration(newDuration)
-                return
-            }else{
-                setisError(true);
-            }
-        }
-        
-        // if(e.target.value.search(/m$/)){
-        //     newDuration= parseFloat(e.target.value) / 60;
-        //     newDuration= 
-        //     //you can set the isError state here
-        //     // setisError(true)
-        //     setDuration(newDuration)
-        //     return
-        // }
+        setDuration(e.target.value)
+        // if(isError){setisError(false)};
+        return;
+    }
+    if(e.target.id.includes('ratings')){
+        setRating(parseInt(e.target.value))
+        // if(isError){setisError(false)};
+        return;
     }
   }
 
   const handleClick= ()=>{
-      //check the values of name, rating, duration
-      if(duration ){
+      //check that the values of name, rating, duration
+      //are not empty
+    //   console.log(rating, name, duration);
+      if(name && rating && duration){
+        //   console.log(duration.search(/h$/));
+        //   console.log(duration.search(/m$/));
+            // if(!duration.search(/h$/) && !duration.search(/m$/)){
+            if(!(/h$/.test(duration)) && !(/m$/.test(duration))) {
+                setIsError(true);
+                console.log(isError);
+                return
+            }else{
+                let newMoviesList= [...moviesList, {name, rating, duration}]
+                setMoviesList(newMoviesList)
+                if(searchedMovies) setsearchedMovies([])
+            }
 
       }
-    let newMoviesList= [...moviesList, {name, rating, duration}]
-    setMoviesList(newMoviesList)
+    
   }
 
   return (
@@ -72,16 +72,7 @@ function Movieform(props) {
               onChange= {handleChange}
             />
           </div>
-          <div className='layout-column mb-15'>
-            <label htmlFor='ratings' className='mb-3'>Ratings</label>
-            <input 
-              type='number' 
-              id='ratings'
-              placeholder='Enter Rating on a scale of 1 to 100'
-              data-testid='ratingsInput'
-              onChange= {handleChange}
-            />
-          </div>
+          
           <div className='layout-column mb-30'>
             <label htmlFor='duration' className='mb-3'>Duration</label>
             <input 
@@ -89,6 +80,17 @@ function Movieform(props) {
               id='duration'
               placeholder='Enter duration in hours or minutes'
               data-testid='durationInput'
+              onChange= {handleChange}
+            />
+          </div>
+
+          <div className='layout-column mb-15'>
+            <label htmlFor='ratings' className='mb-3'>Ratings</label>
+            <input 
+              type='number' 
+              id='ratings'
+              placeholder='Enter Rating on a scale of 1 to 100'
+              data-testid='ratingsInput'
               onChange= {handleChange}
             />
           </div>
@@ -120,7 +122,9 @@ const mapStateToProps= (state)=>{
     name: state.name,
     duration: state.duration,
     rating: state.rating,
-    moviesList: state.moviesList
+    moviesList: state.moviesList,
+    isError: state.isError,
+    searchedMovies: state.searchedMovies
   }
 }
 const mapDispatchToProps= (dispatch)=>{
@@ -128,9 +132,10 @@ const mapDispatchToProps= (dispatch)=>{
     setName: (value)=>{dispatch({type: 'SET_NAME', name: value})},
     setRating: (value)=>{dispatch({type: 'SET_RATING', rating: value})},
     setDuration: (value)=>{dispatch({type: 'SET_DURATION', duration: value})},
-    setisError: (value)=>{dispatch({type: 'SET_ISERROR', isError: value})},
-    setMoviesList: (value)=>{dispatch({type: 'SET_MOVIESLIST', moviesList: value})}
+    setIsError: (value)=>{dispatch({type: 'SET_ISERROR', isError: value})},
+    setMoviesList: (value)=>{dispatch({type: 'SET_MOVIESLIST', moviesList: value})},
+    setsearchedMovies: (value)=>{dispatch({type: 'SET_SEARCHEDMOVIES', searchedMovies: value})}
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Movieform)
+export default connect(mapStateToProps, mapDispatchToProps)(MovieForm)
